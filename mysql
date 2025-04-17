@@ -1,0 +1,945 @@
+
+29 JAN 2024
+============
+
+Database-storage area
+SQL-language
+MYSQL- platform
+RUN IN-localhost 3306
+
+web application-user intraction-data collection done by forms.
+	|
+	|
+data-raw facts (or) unproceed facts.
+	|
+	|
+information-proceed facts
+	|
+	|
+knowledge-it get from information
+	|
+	|
+wisdom-it get from knowledge-making decision
+
+====================================================
+3 type of data
+==============
+1)stuctured data:
+	fixed format.(EX):blueprint
+	ex:
+	===
+	table format:it has a rows and columns
+
+2)unstructred data:
+	it has no fixed format.(EX)image,video,audio
+
+3)semi-structred data:
+	it has structred (or) unstructred format.(ex)email,whatapp msg,
+email sender msg..
+
+===========================================================
+database
+========
+	collection of data stored in database.used to store, manage the data
+============================================================
+
+2 type of data base:
+====================
+1) Relation database:
+	all data can be relatable.college id
+
+2)non-relation database:
+	no relation.attenance id.
+=============================================================
+
+30 JAN 2024
+===========
+DBMS:database management system:
+	it is a system that provide interface for interaction with database
+and managing the storage and organization of data. 
+
+=============================================================
+2 type of DBMS
+==============
+1)RDBMS
+=======
+	relation database management system.mysql,sqlserver
+2)NRDBMS:
+=========
+	non-relation DBMS 
+		1)document database:mangoDB
+		2)keyvalue database:Redis
+		3)columnar:couch DB
+		4)graph:graph ql,neo4j
+=========================================================
+SQL-Structured query language
+	fixed schema, easy and simple.
+NOSQL-not fixed,dynamic schema and complex.
+==========================================================
+	
+
+31 JAN 2024
+===========
+1970's -E.F.CODD (theory publish)
+IBM-2 engineer
+SEQUAL-Structured english query language
+===========================================================
+MYSQL HISTORY:
+==============
+	*MY Structured Quary Language.
+	*released in 1995.
+	*founders-Swedes David axmark, Allan Larsson, Monty Widenius's
+	*MY-get from co-founder Monty Widenius's daughter name.
+	*develop,distrubution and supported by Oracle.
+
+MYSQL Advandage:
+================
+	*speed
+	*It is an Relation Databased Management System.
+	*cross plat-form
+	*easy to use and security
+	*Reliablity
+===============================================================
+	
+MYSQL 5 TYPE OF COMMANDS:
+=======================
+	1)DDL:data definition language:
+		to define,manage and modify the stucture of database, tables,schemas.
+		*CREATE-table and database
+		*DROP-table and database
+		*ALTER-table
+		*TRUNCATE
+		*RENAME-table
+
+	2)DML:data manupulation language:
+		used to manipulate the data in a database.
+		*INSERT-insert a data into the table
+		*DELETE
+		*UPDATE
+	
+	3)DQL:data Query language:
+		used to quering and fetching the data in the database
+		*SELECT
+	
+	4)DCL:data control language:
+		used to control (or) acccess the data in the database
+		*GRANT
+		*REVOKE
+		*DENY
+
+	5)TCL:transaction control language:
+		used to manage transactions ensuring the data consistency and durability.
+		*COMMIT
+		*ROLLBACK
+		*SAVEPOINT (ex)game
+
+===================================================================================
+MYSQL-case sensitive(previous) --------keyword(upper)
+			     	       variables(lower)
+
+ex:CREATE DATABASE(keyword) demo(variable)
+MYSQL-not case sensitive
+===================================================================================
+
+1 FEB 2024
+===========
+
+COMMEND IN MYSQL:
+=================
+single line comment :--
+------------------------------------------------------
+this is table--
+multiple line :/**/
+===============
+/*this 
+is 
+my 
+table*/
+======================================================================================
+RUN MYSQL:
+=========
+Ctrl+Enter
+======================================================================================
+SHOW DATABASES:
+================
+ex:1)
+	SHOW DATABASES;
+	CREATE DATABASE demo;
+	CREATE DATABASE demo2;
+
+
+======================================================================================
+TABLE CREATE:
+=============
+ex:2)
+
+SHOW DATABASES;
+CREATE DATABASE demo;
+USE demo;
+CREATE TABLE students(
+	syntax-- field type null  key 
+
+	    name varchar(20),
+            id int,
+            primary key(id)
+    
+);
+
+======================================================================================
+
+2 FEB 2024
+==========
+
+DATA TYPES:
+===========
+	*STRING
+	*NUMBER
+	*DATE TIME
+====================================================================================
+1)STRING:
+==========
+	*CHAR(SIZE)-fixed length-size (0-255).default value 1.
+		SIZE- parameter
+	*VARCHAR(SIZE)-BOTH LETTERS AND NUMBERS-(0-65535)
+================================================================
+2)NUMBER:
+=========
+	*INT-whole number
+		ex:id int
+	*DECIMAL(SIZE,d)
+		ex:decimal(4,3)
+			output:1.234
+			default value is 0.
+	*FLOAT
+==================================================================
+3)DATE TIME:
+===========
+	*DATE:'YYYY-MM-DD'
+	*DATETIME:'YYYY-MM-DD hh:mm:ss'
+	*YEAR:'YYYY'
+	*TIME:"hh:mm:ss"
+==================================================================
+
+ALTER:
+======
+	add,modify,change,drop
+	1)ADD-add column into the table
+	2)MODIFY-we can modify only the data type
+	3)CHANGE-we can change both field and data type
+
+ex:3:
+
+	
+CREATE DATABASE demo;
+USE demo;
+CREATE TABLE students(
+	-- fieldname type null  key 
+	name char(20),
+    id int,
+    primary key(id)
+);
+SHOW TABLES; 
+INSERT into students(name,id) values ('santhosh',1);
+INSERT into students(name,id) values ('ravi',2);
+INSERT into students(name,id) values ('viki',3),('tamil',4);
+ALTER TABLE students ADD gender varchar(20);
+ALTER TABLE students MODIFY gender char(15);
+ALTER TABLE students CHANGE name studentname varchar(25);
+ALTER TABLE students DROP gender;
+
+======================================================================
+view table:
+===========
+way 1------
+use world;
+select * from city;
+========================
+way 2--------
+syntax:select * database_name.table_name;
+
+select * from sakila.actor;
+===================================================
+
+DATA TYPE -3
+=============
+1)STRING
+==========
+	1)char(size)--->fixed length.size optional parameter.default value 1.number & letters.
+
+ex:
+
+create database demo;
+use demo;
+create table spc(
+	name char
+);
+insert into spc values('r');----correct.because default is one.
+
+insert into spc values('ravi');----wrong.because default is one.so it cannot accept morethan one values.
+-------------------------------------------
+	2)varchar(size)----->u must give size.number & letters.
+
+ex:
+===
+create database demo;
+use demo;
+create table spc(
+	name varchar(40)
+);
+==============================================================================
+2)NUMBER
+--------
+	1)integer-int-whole number
+
+ex:
+===
+ex:
+===
+create database demo;
+use demo;
+create table spc(
+	id int,
+);
+insert into spc values(12.5);---->output:13
+insert into spc values(12.3);---->output:12
+-----------------------------------------------
+	2)DECIMAL(SIZE,D)---->decimal(4,2)--->without d the default value is 0.without size default value is 10.
+		ex:decimal(4,2)---->1234----->output:12.34
+		ex:decimal(4)---->1234----->output:1234
+	
+ex:
+====
+create database demo;
+use demo;
+create table spc(
+	id decimal(5,3)
+);
+insert into spc values(18.993);----->correct
+insert into spc values(1894493);---->wrong.because range morethan 5.
+insert into spc values(18993);---->wrong.because it an decimal.u must gives decimal values.
+
+---------------------------------------------------
+	3)FLOAT
+	
+ex:
+create database demo;
+use demo;
+create table spc(
+	id float
+);
+insert into spc values(18.923);
+================================================================================
+	 
+3)DATE TIME
+===========
+	1)DATE-'YYYY-MM-DD'
+	2)DATETIME-'YYYY-MM-DD HH:MM:SS'
+	3)YEAR-'YYYY'
+	4)TIME-'HH:MM:SS'
+=======================================================================
+
+ALTER:
+=======
+	1)add-u can add colunm in your table.not row
+
+ex:
+create database demo;
+use demo;
+create table spc(
+	id float
+);
+insert into spc values(18.923);
+output----->only display id
+
+alter table spc add studentname varchar(30);
+output----->now both id and studentname are visible.
+
+alter database databasename----->error
+
+---------------------------------------------------------------------
+
+	2)modify-u can change in your datatype only.
+
+create database demo;
+use demo;
+create table spc(
+	id float
+);
+output:id float
+
+alter table spc modify id int;
+output:id int
+-----------------------------------------------------------------------
+	3)Change-u can change both colunm name and datatype
+
+ex:
+
+create database demo;
+use demo;
+create table spc(
+	id float
+);
+output:id float
+
+alter table spc change  id  stuid decimal;
+
+output:stuid decimal;
+-------------------------------------------------------------------------
+	4)drop
+
+ex:
+
+create database demo;
+use demo;
+create table spc(
+	id float
+);
+insert into spc values(18.923);
+alter table spc add studentname varchar(30);
+
+output:
+id 	    float
+studentname varchar(30)
+------
+alter table spc drop id;
+
+output:
+studentname varchar(30)
+==========================================================================================
+
+3 FEB 2024
+===========
+
+INSERT into students(name,id) values ('santhosh',1),('sri',1)
+
+commed line: ctrl+/
+
+PRIMARY KEY-cannot accept dublicate values
+FOREIGN KEY-accept dublicate values
+=========================================================================
+
+RENAME
+=======
+	syntax: RENAME(keyword) Table(keyword) old_tablename TO newtablename
+
+ex:4
+
+CREATE DATABASE demo;
+USE demo;
+CREATE TABLE student(
+	name varchar(25),
+    id int,
+    primary key(id)
+);
+
+RENAME TABLE student TO oranium_student;
+ALTER TABLE oranium_student CHANGE name studentname varchar(25); 
+
+===============================================================================
+
+DELETE:
+=======
+	DELETE(keyword) FROM tablename where id=1
+
+	DELETE FROM oranium_student where name=tamil;
+
+===============================================================================
+SELECT:
+======
+	syntax:SELECT(keyword) * FROM tablename(variablename);
+
+ex:5
+
+CREATE DATABASE demo;
+USE demo;
+CREATE TABLE student(
+	name varchar(25),
+    id int,
+    primary key(id)
+);
+
+
+SELECT * FROM student;
+
+====================================================================================
+UPDATE:
+========
+	stntax:UPDATE(keyword) tablename SET name='kalai' where id=1;
+
+ex:6
+
+SHOW DATABASES;
+CREATE DATABASE demo;
+USE demo;
+CREATE TABLE student(
+	name varchar(25),
+    id int,
+    primary key(id)
+);
+
+RENAME TABLE student TO oranium_student;
+ALTER TABLE oranium_student CHANGE name studentname varchar(25); 
+INSERT into oranium_student(studentname,id) values ('viki',1),('tamil',2);
+SELECT * FROM oranium_student;
+DELETE FROM oranium_student where id=3;
+UPDATE /*(keyword) */ oranium_student /*tablename*/ SET studentname='kalai',id=5 where id=1;
+
+=============================================================================================
+
+CONSTRAINTS:
+============
+
+	It is a condition applicable on a field used it limit type of data that can go into a table.
+================================================================================================
+TYPES:
+=====
+	notnull:does not allow null values.it allows dublicate values.ex: names
+	unique:does allow dublicate values.it allows null values.
+	primary key:does allow dublicate values.does not allow null values.combination of both notnull and unique.
+		use only tables.only one primary key in the table.
+	foreign key:it is key in a table used to refer to a primary key in a another table in order 
+		to combne 2 tables.more than one.
+	check(condtion):check the data based on condition.
+	default default_name:if no given value.it take default values.
+===================================================================================================
+
+6 FEB 2024
+===========
+
+ERROR:
+======
+	if you have any error using update or delete----->edit-preperrenece-sqleditor-(off) safe delete and update.
+	if you have any error using commit or rollback---->query-off auto commit.
+============================================================================================================
+TRUNCATE:
+========
+
+	ALL record will be removed.cannot delete a specific data.not table.just delete the data's.
+
+	truncate table spc where id=2;----->WRONG SYNTAX;
+	truncate table spc; ------>CORRECT
+
+====================================================================================================
+DELETE:
+=======
+	All record wiil be removed and also delete a specific data's.
+
+	Delete from tablename where id=1;---->correct
+	Delete from tablename;----->correct
+===================================================================================================
+
+* --> universal selector.
+
+===================================================================================================
+
+7 FEB 2024
+===========
+differents between DROP,DELETE,TRUNCATE
+=======================================
+1)DROP:
+========
+	*you can delete both database and table.
+	*All record will be removed.
+	*Structure also will be removed.
+	*cannot rollback.
+	*DATA DEFINITION LANGUAGE.
+
+2)TRUNCATE:
+============
+	*we can only delete the table data's
+	*All record will be removed.
+	*Structure not removed.
+	*cannot rollback.
+	*DATA DEFINITION LANGUAGE.
+
+
+3)DELETE:
+=========
+	*we can only delete the table data's.
+	*All record will be removed and also we can delete specific data's.
+	*Structure not removed.
+	*can rollback.
+	*Data manipulate language.
+
+====================================================================================	
+DQL:
+	component of the a sql statement that provide additional instruction or condition
+for statement execution.
+
+ex: where-it is used to specify a condition.
+	select * from city where id=1
+===========================================================================================
+Start transaction:
+==================
+	store the data temporary.
+==========================================================================
+COMMIT:
+========
+	It breaks the all save point.
+	data will be saved.
+==========================================================================
+FILTER:
+======
+	*select
+
+OPERATORS:
+=========	
+1)ARITHMETRIC OPERATOR:
+----------------------
+	+, -, *, /-return quotient, %(modulo)-return remainder.
+
+
+ex:
+====
+
+use world;
+select population,population+10 from city;
+
+output:
+------
+population 	population+10
+1000		1010
+2012		2022
+
+======================================================
+
+ex:
+====
+
+use world;
+select population,population+10 as result from city;
+
+output:
+------
+population 	result
+1000		1010
+2012		2022
+=====================================================
+2)COMPARISION OPERATOR:
+=======================
+	>, <, >=, <=, !=, <>
+
+ex:
+use world;
+select id,population from city where id<=20;
+
+output:
+
+id		population
+1		234455656
+2		240018399
+3		450020200
+4		484939234
+.......
+.......
+.......
+.......
+20		6938383734
+
+===================================================
+3)logical operator:
+===================
+	and,  or, not
+
+and--- T T ---- T
+       T F ---- F
+       F T ---- F
+       F F ---- F
+
+OR --- T T ---- T
+       T F ---- T
+       F T ---- T
+       F F ---- F
+
+NOT --- T---F
+	F---T
+
+ex:
+====
+
+use world;
+select id from city where id>=5 or id<=10
+
+output:
+-------
+
+output:
+
+id		population
+5		234455656
+6		240018399
+7		450020200
+8		484939234
+9		948848884
+10		693838373
+
+===============================================================================================
+
+8 FEB 2024
+==========
+
+	1)MYSQL is a _________ system.
+	2)MYSQL fullform?
+	3)what is database? and types?
+	4)MYSQL run in local host ________ .
+	5)what is data and types with example?
+
+	-----------------------------------------------------------------------------------
+	
+
+select * from city where population=4399819 and 3841396;-----wrong command
+=================================================================
+clause:
+=======
+	where,orderby,groupby,in, between,offset,limit,is,like
+===================================================================
+without use:
+=============
+	SELECT * FROM demo.student;
+============================================================================
+between:
+=========
+	use world;
+	SELECT * FROM city where population between 300000 and 400000;
+======================================================================
+IN:
+====
+
+use world;
+SELECT * FROM city where countrycode in ('ind','bra','are');
+==========================================================================
+IS:
+====
+SELECT name FROM world.country where indepyear is null;-----CORRECT
+SELECT name FROM world.country where indepyear=null;--------WRONG
+SELECT * FROM city where countrycode is 'ind';--------------WRONG
+==========================================================================
+ORDER BY:---sorting
+=========
+select * from sakila.actor order by first_name desc;
+default:ASC
+====================================================================
+GROUP BY:
+==========
+select countrycode,sum(population) as total_population from world.city group by CountryCode;
+=====================================================================================================
+
+9 FEB 2024
+===========
+
+	1)what is MYSQL?Advandage?
+	2)create one database then create 2 table into the database?
+	3)MYSQL command types?
+	4)CREATE DATABASE -------
+	  demo ----------
+	5)MYSQL commend line?
+	6)How to view your table in different way?
+	-----------------------------------------------------------------------------------
+
+HAVING:
+=======
+	individual group filter
+	we use aggregate function---->sum,count....
+	select,groupby
+	post filter
+
+select continent,COUNT(name) as total_name from world.country group by continent having 
+count(name)>10;
+
+select countrycode,count(countrycode) as count_of_country from world.city group by 
+countrycode having count(countrycode)>100;----->correct
+
+select countrycode,count(countrycode) as count_of_country from world.city group by 
+countrycode having count(count_of_country)>100;----->error
+------------------------------------------------------------------------------------
+where:
+======
+	individual row filter
+	we cannot use aggregate function
+	select,insert,update,delete
+	pre filter
+
+===============================================================================
+LIMIT:
+======
+	set limit in table.
+
+select  * from world.city order by Population desc limit 5;
+=============================================================================
+
+offset:
+=======
+	act like skip.
+
+select  * from world.city order by Population desc limit 5 offset 5;
+=============================================================================
+like:-wildcard
+=====
+ use % operator-it take 0,1,morethan 1.
+
+syntax:like "patter"
+
+ex:
+===
+	1)like "a%"-Aarthi,Anu
+		select * from world.city where name like "a%"
+
+	2)like "%ur%"-Surya,urvathi
+
+	3)like "a%a"-"s%s"-akalya,santhos
+
+	4)like "a_i"-abi,ani,ami---correct
+		    -abirami---wrong-because it only accept 3 charactor
+
+	  select name from world.city where name like "h___t";---correct
+
+	5)like "a_i%"-abi,abirami--correct
+=================================================================================
+
+12 FEB 2024
+===========
+
+FUNCTION:
+=========
+syntax:function_name(column_name)
+
+ex:
+
+SELECt distinct countrycode from city;----->remove duplicate values.
+
+============================================================
+Table joining:
+===============
+1)Join 
+2)inner join
+3)left join 
+4)Right join
+5)cross join
+6)self join
+======================================================================
+syntax:
+========
+select * from table1name join-name table2name on codition checking;
+========================================================================
+join/inner join:
+=================
+return true values
+===========================
+right join:
+===========
+
+select * from demo.dep  right join  demo.student on stdname=depname;
+
+it return all values in right handside table and also return null in anything wrong in 
+left table.-support only right hand side table
+=================================================================
+
+13 FEB 2024
+===========
+
+MOCK TEST:
+===========
+
+	1)How to store a data temporary?
+	2)how to select database?
+	3)write 5 type of mysql commands? with example-syntax
+	4)write down the datatype?
+	5)how to add colunm in table?
+	6)Rename the table name?
+	7)how to check the any one field row is null?
+	8)true or false? and give the reason?
+		select * from world.country group by countrycode="ind"
+	9)write the code to arrange the colunm in decending order?
+       10)filter the city table following countrycode is ind, afg, pak
+		without using or operator.
+=========================================================================================================== 
+
+14 FEB 2024
+============
+delimiter:
+---------
+	default value ;
+	if u want change use delimiter any_symbol.
+
+view:
+======
+	it save output.
+
+	create view pakisdhan as select name from city;
+------------------------------------
+procedure:
+==========
+	it save the query.
+
+ex:
+====
+
+ delimiter /
+ create procedure pak()
+ begin
+ select * from city where countrycode='pak';
+ end /
+ 
+delimiter ;
+====================================================
+union: ---> it does not allow duplicate values.
+union all ----> it allow duplicate values.
+
+ex:
+===
+
+select * from demo.dep left join demo.student on dep.name=student.name 
+union all
+select * from demo.dep right join demo.student on dep.name=student.name;
+==============================================================================
+
+15 FEB 2024
+============
+
+grant-access
+revoke-access deny
+
+create user:
+============
+syntax:create user 'user_name'@'host_name' identified by 'password';
+================================================================================
+
+ex:
+select user,host from mysql.user; ----> used to view user and host name
+create user 'haris'@'localhost' identified by 'haris1234'; ----> user create
+show grants; -----> it display only root user access
+show grants for 'tamil'@'localhost'; ----> display access for tamil user
+
+grant select on world.city to 'tamil'@'localhost'; --> give the select access
+grant update(name,countrycode) on world.city to 'tamil'@'localhost'; --> give update access
+grant all privileges on *.* to 'tamil'@'localhost'; ----> gives all access
+
+revoke all privileges,grant option from 'tamil'@'localhost'; --> delete all access for tamil user
+revoke update (name) on world.city from 'tamil'@'localhost'; --> delete the update name access for tamil user
+
+drop user 'tamil'@'localhost'; ----> used to delete the user.
+===================================================================================
+CASE:
+=======
+select * ,
+case
+when  population>=1000000 then "large"
+when  population<1000000 and population>500000 then "medium"
+when population<=500000 and Population>=300000 then "small"
+else "verysmall"
+end as city_size
+from city
+------------------------------------------------------------------
+ex:2:
+=====
+select * ,
+case
+when countrycode="ind" and district="seoul" then "korea"
+when countrycode="afg" then "pakisthan"
+else "no"
+end as result
+from city;
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
