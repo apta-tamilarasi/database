@@ -503,6 +503,61 @@ TYPES:
 	default default_name:if no given value.it take default values.
 ===================================================================================================
 
+## 1. PRIMARY KEY Constraint
+Uniquely identifies each record in a table.
+
+
+CREATE TABLE users (
+  id INT PRIMARY KEY,
+  name VARCHAR(255)
+);
+
+
+## 2. FOREIGN KEY Constraint
+Links the data between tables.
+
+
+CREATE TABLE orders (
+  id INT PRIMARY KEY,
+  user_id INT,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+
+## 3. UNIQUE Constraint
+Ensures all values in a column are unique.
+
+
+CREATE TABLE users (
+  id INT PRIMARY KEY,
+  email VARCHAR(255) UNIQUE
+);
+
+
+## 4. NOT NULL Constraint
+Ensures a column cannot contain null values.
+
+
+CREATE TABLE users (
+  id INT PRIMARY KEY,
+  name VARCHAR(255) NOT NULL
+);
+
+
+## 5. CHECK Constraint (MySQL 8.0.16 and later)
+Ensures all values in a column satisfy a specific condition.
+
+
+CREATE TABLE users (
+  id INT PRIMARY KEY,
+  age INT CHECK (age > 0)
+);
+
+
+Constraints help maintain data integrity and consistency in your database.
+
+============================================================================================================
+
 6 FEB 2024
 ===========
 
