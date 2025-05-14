@@ -860,7 +860,7 @@ syntax:function_name(column_name)
 
 ex:
 
-SELECt distinct countrycode from city;----->remove duplicate values.
+SELECT distinct countrycode from city;----->remove duplicate values.
 
 ============================================================
 Table joining:
@@ -888,13 +888,6 @@ select * from demo.dep  right join  demo.student on stdname=depname;
 it return all values in right handside table and also return null in anything wrong in 
 left table.-support only right hand side table
 =================================================================
-
-# Combine everything into one SQL script-style text file
-
-sql_script = """
--- MySQL LEFT JOIN and RIGHT JOIN Example with Tables and Output
--- -------------------------------------------------------------
-
 Create Tables
 ===================
 CREATE TABLE Employees (
@@ -947,6 +940,143 @@ RIGHT JOIN Departments d ON e.dept_id = d.dept_id;
 -- 2      | Bob     | Finance
 -- NULL   | NULL    | Engineering
 ========================================================================================================================================
+1. TABLE CREATION & INSERTION
+
+-- Employees Table
+CREATE TABLE Employees (
+    EmpID INT PRIMARY KEY,
+    EmpName VARCHAR(50),
+    DeptID INT,
+    ManagerID INT
+);
+
+INSERT INTO Employees (EmpID, EmpName, DeptID, ManagerID) VALUES
+(1, 'Ram', 10, NULL),
+(2, 'Raj', 20, 1),
+(3, 'Ravi', 30, 1),
+(4, 'Rani', NULL, 2);
+
+-- Departments Table
+CREATE TABLE Departments (
+    DeptID INT PRIMARY KEY,
+    DeptName VARCHAR(50)
+);
+
+INSERT INTO Departments (DeptID, DeptName) VALUES
+(10, 'HR'),
+(20, 'IT'),
+(30, 'Finance'),
+(40, 'Marketing');
+
+------------------------------------------------------------
+2. JOIN (Same as INNER JOIN)
+
+Query:
+SELECT EmpName, DeptName
+FROM Employees
+JOIN Departments ON Employees.DeptID = Departments.DeptID;
+
+Output:
+| EmpName | DeptName |
+|---------|----------|
+| Ram     | HR       |
+| Raj     | IT       |
+| Ravi    | Finance  |
+
+------------------------------------------------------------
+3. INNER JOIN
+
+Query:
+SELECT EmpName, DeptName
+FROM Employees
+INNER JOIN Departments ON Employees.DeptID = Departments.DeptID;
+
+Output:
+| EmpName | DeptName |
+|---------|----------|
+| Ram     | HR       |
+| Raj     | IT       |
+| Ravi    | Finance  |
+
+------------------------------------------------------------
+4. LEFT JOIN
+
+Query:
+SELECT EmpName, DeptName
+FROM Employees
+LEFT JOIN Departments ON Employees.DeptID = Departments.DeptID;
+
+Output:
+| EmpName | DeptName |
+|---------|----------|
+| Ram     | HR       |
+| Raj     | IT       |
+| Ravi    | Finance  |
+| Rani    | NULL     |
+
+------------------------------------------------------------
+5. RIGHT JOIN
+
+Query:
+SELECT EmpName, DeptName
+FROM Employees
+RIGHT JOIN Departments ON Employees.DeptID = Departments.DeptID;
+
+Output:
+| EmpName | DeptName  |
+|---------|-----------|
+| Ram     | HR        |
+| Raj     | IT        |
+| Ravi    | Finance   |
+| NULL    | Marketing |
+
+(Note: RIGHT JOIN may not be supported in some versions of MySQL, especially older versions.)
+
+------------------------------------------------------------
+6. CROSS JOIN
+
+Query:
+SELECT EmpName, DeptName
+FROM Employees
+CROSS JOIN Departments;
+
+Output (16 rows):
+| EmpName | DeptName  |
+|---------|-----------|
+| Ram     | HR        |
+| Ram     | IT        |
+| Ram     | Finance   |
+| Ram     | Marketing |
+| Raj     | HR        |
+| Raj     | IT        |
+| Raj     | Finance   |
+| Raj     | Marketing |
+| Ravi    | HR        |
+| Ravi    | IT        |
+| Ravi    | Finance   |
+| Ravi    | Marketing |
+| Rani    | HR        |
+| Rani    | IT        |
+| Rani    | Finance   |
+| Rani    | Marketing |
+
+------------------------------------------------------------
+7. SELF JOIN
+
+Query:
+SELECT E.EmpName AS Employee, M.EmpName AS Manager
+FROM Employees E
+LEFT JOIN Employees M ON E.ManagerID = M.EmpID;
+
+Output:
+| Employee | Manager |
+|----------|---------|
+| Ram      | NULL    |
+| Raj      | Ram     |
+| Ravi     | Ram     |
+| Rani     | Raj     |
+
+------------------------------------------------------------------------------------------------------------------------
 
 13 FEB 2024
 ===========
