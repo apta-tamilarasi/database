@@ -889,6 +889,65 @@ it return all values in right handside table and also return null in anything wr
 left table.-support only right hand side table
 =================================================================
 
+# Combine everything into one SQL script-style text file
+
+sql_script = """
+-- MySQL LEFT JOIN and RIGHT JOIN Example with Tables and Output
+-- -------------------------------------------------------------
+
+Create Tables
+===================
+CREATE TABLE Employees (
+    emp_id INT,
+    name VARCHAR(50),
+    dept_id INT
+);
+
+CREATE TABLE Departments (
+    dept_id INT,
+    dept_name VARCHAR(50)
+);
+
+-- Step 2: Insert Data
+INSERT INTO Employees (emp_id, name, dept_id) VALUES
+(1, 'Alice', 101),
+(2, 'Bob', 102),
+(3, 'Charlie', NULL),
+(4, 'David', 104);
+
+INSERT INTO Departments (dept_id, dept_name) VALUES
+(101, 'HR'),
+(102, 'Finance'),
+(103, 'Engineering');
+==================================================================================================================
+LEFT JOIN
+===========
+SELECT e.emp_id, e.name, d.dept_name
+FROM Employees e
+LEFT JOIN Departments d ON e.dept_id = d.dept_id;
+
+-- Expected LEFT JOIN Output:
+-- emp_id | name    | dept_name
+-- ----------------------------
+-- 1      | Alice   | HR
+-- 2      | Bob     | Finance
+-- 3      | Charlie | NULL
+-- 4      | David   | NULL
+=====================================================================================================================
+RIGHT JOIN
+=================
+SELECT e.emp_id, e.name, d.dept_name
+FROM Employees e
+RIGHT JOIN Departments d ON e.dept_id = d.dept_id;
+
+-- Expected RIGHT JOIN Output:
+-- emp_id | name    | dept_name
+-- ----------------------------
+-- 1      | Alice   | HR
+-- 2      | Bob     | Finance
+-- NULL   | NULL    | Engineering
+========================================================================================================================================
+
 13 FEB 2024
 ===========
 
