@@ -1,0 +1,567 @@
+Constraints
+==================
+
+MySQL CONSTRAINTS PRACTICE QUESTIONS
+====================================
+
+Database: Hospital Management System
+
+SECTION 1: TABLE CREATION WITH CONSTRAINTS
+------------------------------------------
+
+Q1.1 Create a Patients table with these constraints:
+- patient_id as primary key with auto increment
+- patient_code must be unique and not null
+- full_name not null
+- email must be unique
+- phone not null
+- age between 0 and 120 (check constraint)
+- blood_type as enum ('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-')
+- admission_date with default current date
+- is_active default true
+
+Q1.2 Create a Doctors table with:
+- doctor_id as primary key with auto increment
+- license_number unique not null
+- specialization not null
+- experience_years check constraint (>= 0)
+- consultation_fee default 500, check (>= 0)
+- status enum ('Active', 'On Leave', 'Retired')
+
+Q1.3 Create an Appointments table with:
+- appointment_id primary key auto increment
+- patient_id foreign key to Patients
+- doctor_id foreign key to Doctors
+- appointment_date not null
+- appointment_time not null
+- status enum ('Scheduled', 'Completed', 'Cancelled', 'No Show') default 'Scheduled'
+- Unique constraint: combination of doctor_id, appointment_date, appointment_time
+- Check: appointment_date cannot be in the past
+
+SECTION 2: INSERT OPERATIONS TESTING CONSTRAINTS
+------------------------------------------------
+
+Q2.1 Which constraints will be violated by these insert statements?
+
+INSERT INTO Patients (patient_code, full_name, age, blood_type) 
+VALUES (NULL, 'John Doe', 25, 'A+');
+
+INSERT INTO Patients (patient_code, full_name, age, blood_type) 
+VALUES ('P001', NULL, 25, 'A+');
+
+INSERT INTO Patients (patient_code, full_name, age, blood_type) 
+VALUES ('P001', 'John Doe', 150, 'A+');
+
+INSERT INTO Patients (patient_code, full_name, age, blood_type) 
+VALUES ('P001', 'Jane Doe', 30, 'Z+');
+
+Q2.2 Insert data that will test:
+- Duplicate unique constraint violation
+- Foreign key constraint violation
+- Check constraint violation
+- Default value application
+- Enum value validation
+
+SECTION 3: UPDATE OPERATIONS
+----------------------------
+
+Q3.1 What happens when you try to:
+- Update a patient's age to -5?
+- Update a doctor's consultation_fee to NULL?
+- Update appointment_date to yesterday's date?
+- Set a patient's status to a value not in enum?
+
+Q3.2 Write UPDATE statements that will:
+- Violate foreign key constraint
+- Violate unique constraint
+- Violate check constraint
+- Successfully use default values
+
+SECTION 4: DELETE OPERATIONS WITH FOREIGN KEYS
+----------------------------------------------
+
+Q4.1 Create tables with different foreign key actions:
+- Table A: ON DELETE CASCADE
+- Table B: ON DELETE SET NULL
+- Table C: ON DELETE RESTRICT
+- Table D: ON DELETE NO ACTION
+
+Q4.2 What happens when you try to delete:
+- A doctor who has appointments?
+- A patient with medical records?
+- A department with doctors assigned?
+
+SECTION 5: ALTER TABLE - ADDING CONSTRAINTS
+-------------------------------------------
+
+Q5.1 Add these constraints to existing tables:
+1. Add NOT NULL constraint to existing column
+2. Add UNIQUE constraint to phone number in Patients table
+3. Add CHECK constraint for salary > 0 in Doctors table
+4. Add FOREIGN KEY constraint between two existing tables
+5. Add DEFAULT value to consultation_fee
+
+Q5.2 What errors might occur when adding constraints to tables with existing data?
+
+SECTION 6: COMPLEX CONSTRAINTS
+------------------------------
+
+Q6.1 Create a Prescriptions table with:
+- Composite primary key (appointment_id, medicine_id)
+- Check: dosage > 0
+- Check: refills between 0 and 5
+- Default duration: 7 days
+- Foreign keys to Appointments and Medicines tables
+
+Q6.2 Create a MedicalRecords table with:
+- Auto increment record_id
+- Patient_id foreign key
+- Visit_date default current date
+- Check: temperature between 34°C and 42°C
+- Check: blood_pressure format like '120/80'
+- Unique constraint: patient_id + visit_date combination
+
+SECTION 7: REAL-WORLD SCENARIOS
+--------------------------------
+
+Q7.1 Design a Billing table with constraints for:
+- Invoice number must be unique
+- Amount must be positive
+- Payment_date cannot be before invoice_date
+- Payment_status enum ('Pending', 'Paid', 'Partial', 'Cancelled')
+- Discount cannot exceed 50%
+- Foreign keys to Patients and Appointments
+
+Q7.2 Create a WardManagement system with:
+- Ward capacity check (patients <= beds_available)
+- Bed number unique within ward
+- Check constraint for admission_date <= discharge_date
+- Default discharge_date as NULL
+- Enum for bed_type ('General', 'ICU', 'Private', 'Semi-Private')
+
+SECTION 8: CONSTRAINT CONFLICTS AND RESOLUTION
+----------------------------------------------
+
+Q8.1 What happens when:
+- A NOT NULL column has a DEFAULT constraint but you explicitly insert NULL?
+- A UNIQUE constraint conflicts with a PRIMARY KEY?
+- A CHECK constraint contradicts with an ENUM restriction?
+- Foreign key references a column that's not unique?
+
+Q8.2 How would you handle:
+- Temporarily disabling constraints for bulk import?
+- Adding constraints without checking existing data?
+- Dropping constraints before altering table structure?
+
+SECTION 9: PERFORMANCE AND CONSTRAINTS
+---------------------------------------
+
+Q9.1 Which constraints automatically create indexes?
+
+Q9.2 How do constraints affect INSERT/UPDATE performance?
+
+Q9.3 What's the difference between UNIQUE constraint and UNIQUE index?
+
+SECTION 10: ADVANCED CONSTRAINT SCENARIOS
+------------------------------------------
+
+Q10.1 Create a constraint that ensures:
+- Doctor's consultation end_time is after start_time
+- Patient's discharge_date is after admission_date
+- Appointment duration is minimum 15 minutes
+- Medicine expiry_date is in the future
+
+Q10.2 Implement constraints using triggers for:
+- Age calculation from birth_date
+- Automatic status change based on dates
+- Complex business rules not covered by standard constraints
+
+
+-------------------------------------------------------------------------------------------------
+Answer:
+__________
+
+MySQL CONSTRAINTS PRACTICE - ANSWERS & OUTPUTS
+==============================================
+
+SECTION 1: TABLE CREATION WITH CONSTRAINTS
+------------------------------------------
+
+Q1.1 Patients Table Creation:
+CREATE TABLE Patients (
+    patient_id INT PRIMARY KEY AUTO_INCREMENT,
+    patient_code VARCHAR(20) UNIQUE NOT NULL,
+    full_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE,
+    phone VARCHAR(15) NOT NULL,
+    age INT CHECK (age >= 0 AND age <= 120),
+    blood_type ENUM('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'),
+    admission_date DATE DEFAULT (CURRENT_DATE),
+    is_active BOOLEAN DEFAULT TRUE
+);
+Output: Query OK, 0 rows affected
+
+Q1.2 Doctors Table Creation:
+CREATE TABLE Doctors (
+    doctor_id INT PRIMARY KEY AUTO_INCREMENT,
+    license_number VARCHAR(20) UNIQUE NOT NULL,
+    specialization VARCHAR(50) NOT NULL,
+    experience_years INT CHECK (experience_years >= 0),
+    consultation_fee DECIMAL(10,2) DEFAULT 500.00 CHECK (consultation_fee >= 0),
+    status ENUM('Active', 'On Leave', 'Retired') DEFAULT 'Active'
+);
+Output: Query OK, 0 rows affected
+
+Q1.3 Appointments Table Creation:
+CREATE TABLE Appointments (
+    appointment_id INT PRIMARY KEY AUTO_INCREMENT,
+    patient_id INT NOT NULL,
+    doctor_id INT NOT NULL,
+    appointment_date DATE NOT NULL,
+    appointment_time TIME NOT NULL,
+    status ENUM('Scheduled', 'Completed', 'Cancelled', 'No Show') DEFAULT 'Scheduled',
+    
+    UNIQUE KEY unique_doctor_slot (doctor_id, appointment_date, appointment_time),
+    CHECK (appointment_date >= CURDATE()),
+    
+    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id),
+    FOREIGN KEY (doctor_id) REFERENCES Doctors(doctor_id)
+);
+Output: Query OK, 0 rows affected
+
+SECTION 2: INSERT OPERATIONS TESTING CONSTRAINTS
+------------------------------------------------
+
+Q2.1 Constraint Violation Outputs:
+
+1. INSERT INTO Patients (patient_code, full_name, age, blood_type) 
+   VALUES (NULL, 'John Doe', 25, 'A+');
+   Output: ERROR 1048 (23000): Column 'patient_code' cannot be null
+
+2. INSERT INTO Patients (patient_code, full_name, age, blood_type) 
+   VALUES ('P001', NULL, 25, 'A+');
+   Output: ERROR 1048 (23000): Column 'full_name' cannot be null
+
+3. INSERT INTO Patients (patient_code, full_name, age, blood_type) 
+   VALUES ('P001', 'John Doe', 150, 'A+');
+   Output: ERROR 3819 (HY000): Check constraint 'patients_chk_1' is violated
+
+4. INSERT INTO Patients (patient_code, full_name, age, blood_type) 
+   VALUES ('P001', 'Jane Doe', 30, 'Z+');
+   Output: ERROR 1265 (01000): Data truncated for column 'blood_type' at row 1
+
+Q2.2 Sample Insert Tests:
+Test 1: Duplicate unique constraint
+INSERT INTO Patients (patient_code, full_name, phone, age) VALUES ('P001', 'John', '123456', 25);
+-- Works: 1 row affected
+
+INSERT INTO Patients (patient_code, full_name, phone, age) VALUES ('P001', 'Jane', '654321', 30);
+-- Output: ERROR 1062 (23000): Duplicate entry 'P001' for key 'patients.patient_code'
+
+Test 2: Foreign key violation
+INSERT INTO Appointments (patient_id, doctor_id, appointment_date, appointment_time) 
+VALUES (999, 999, '2024-01-20', '10:00:00');
+-- Output: ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails
+
+Test 3: Check constraint violation
+INSERT INTO Patients (patient_code, full_name, phone, age) VALUES ('P002', 'Test', '111111', -5);
+-- Output: ERROR 3819 (HY000): Check constraint 'patients_chk_1' is violated
+
+Test 4: Default value application
+INSERT INTO Patients (patient_code, full_name, phone, age) VALUES ('P003', 'Default Test', '222222', 40);
+-- admission_date automatically set to today's date
+-- is_active automatically set to TRUE
+
+Test 5: Enum validation
+INSERT INTO Doctors (license_number, specialization, status) 
+VALUES ('LIC001', 'Cardiology', 'InvalidStatus');
+-- Output: ERROR 1265 (01000): Data truncated for column 'status' at row 1
+
+SECTION 3: UPDATE OPERATIONS
+----------------------------
+
+Q3.1 Update Operations Output:
+
+1. Update patient's age to -5:
+   UPDATE Patients SET age = -5 WHERE patient_id = 1;
+   -- Output: ERROR 3819 (HY000): Check constraint 'patients_chk_1' is violated
+
+2. Update doctor's consultation_fee to NULL:
+   UPDATE Doctors SET consultation_fee = NULL WHERE doctor_id = 1;
+   -- Output: Query OK, 1 row affected (if column allows NULL)
+
+3. Update appointment_date to yesterday:
+   UPDATE Appointments SET appointment_date = DATE_SUB(CURDATE(), INTERVAL 1 DAY) 
+   WHERE appointment_id = 1;
+   -- Output: ERROR 3819 (HY000): Check constraint 'appointments_chk_1' is violated
+
+4. Set patient status to value not in enum:
+   UPDATE Patients SET status = 'Invalid' WHERE patient_id = 1;
+   -- Output: ERROR 1265 (01000): Data truncated for column 'status' at row 1
+
+Q3.2 UPDATE Statements:
+
+1. Violate foreign key:
+   UPDATE Appointments SET patient_id = 999 WHERE appointment_id = 1;
+   -- Output: ERROR 1452 (23000): Cannot add or update a child row
+
+2. Violate unique constraint:
+   UPDATE Patients SET patient_code = 'P001' WHERE patient_id = 2;
+   -- Output: ERROR 1062 (23000): Duplicate entry 'P001' for key 'patients.patient_code'
+
+3. Violate check constraint:
+   UPDATE Patients SET age = 200 WHERE patient_id = 1;
+   -- Output: ERROR 3819 (HY000): Check constraint 'patients_chk_1' is violated
+
+4. Use default values:
+   UPDATE Appointments SET status = DEFAULT WHERE appointment_id = 1;
+   -- Output: Query OK, 1 row affected
+
+SECTION 4: DELETE OPERATIONS WITH FOREIGN KEYS
+----------------------------------------------
+
+Q4.1 Tables with Different Foreign Key Actions:
+-- Table A: ON DELETE CASCADE
+CREATE TABLE MedicalRecords (
+    record_id INT PRIMARY KEY AUTO_INCREMENT,
+    patient_id INT,
+    diagnosis TEXT,
+    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id) ON DELETE CASCADE
+);
+
+-- Table B: ON DELETE SET NULL
+CREATE TABLE PatientLogs (
+    log_id INT PRIMARY KEY AUTO_INCREMENT,
+    patient_id INT,
+    action VARCHAR(50),
+    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id) ON DELETE SET NULL
+);
+
+-- Table C: ON DELETE RESTRICT
+CREATE TABLE Prescriptions (
+    prescription_id INT PRIMARY KEY AUTO_INCREMENT,
+    patient_id INT,
+    medicine VARCHAR(100),
+    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id) ON DELETE RESTRICT
+);
+
+-- Table D: ON DELETE NO ACTION
+CREATE TABLE BillingRecords (
+    bill_id INT PRIMARY KEY AUTO_INCREMENT,
+    patient_id INT,
+    amount DECIMAL(10,2),
+    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id) ON DELETE NO ACTION
+);
+
+Q4.2 Delete Operations Output:
+1. Delete doctor who has appointments:
+   DELETE FROM Doctors WHERE doctor_id = 1;
+   -- Output: ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails
+
+2. Delete patient with medical records (CASCADE):
+   DELETE FROM Patients WHERE patient_id = 1;
+   -- If ON DELETE CASCADE: All medical records for patient_id=1 are also deleted
+   -- If ON DELETE RESTRICT: ERROR 1451 (23000)
+
+3. Delete department with doctors assigned:
+   -- Similar to above, depends on foreign key configuration
+
+SECTION 5: ALTER TABLE - ADDING CONSTRAINTS
+-------------------------------------------
+
+Q5.1 Adding Constraints:
+
+1. Add NOT NULL constraint:
+   ALTER TABLE Patients MODIFY COLUMN phone VARCHAR(15) NOT NULL;
+   -- Output: Query OK, 0 rows affected
+
+2. Add UNIQUE constraint:
+   ALTER TABLE Patients ADD CONSTRAINT unique_phone UNIQUE (phone);
+   -- Output: Query OK, 0 rows affected
+
+3. Add CHECK constraint:
+   ALTER TABLE Doctors ADD CONSTRAINT chk_salary CHECK (salary > 0);
+   -- Output: Query OK, 0 rows affected
+
+4. Add FOREIGN KEY:
+   ALTER TABLE Appointments ADD CONSTRAINT fk_patient
+   FOREIGN KEY (patient_id) REFERENCES Patients(patient_id);
+   -- Output: Query OK, 0 rows affected
+
+5. Add DEFAULT value:
+   ALTER TABLE Doctors ALTER consultation_fee SET DEFAULT 500.00;
+   -- Output: Query OK, 0 rows affected
+
+Q5.2 Possible Errors:
+1. Adding NOT NULL to column with NULL values
+   -- ERROR 1138 (22004): Invalid use of NULL value
+
+2. Adding UNIQUE to column with duplicate values
+   -- ERROR 1062 (23000): Duplicate entry for key
+
+3. Adding CHECK constraint that existing data violates
+   -- ERROR 3819 (HY000): Check constraint is violated
+
+4. Adding FOREIGN KEY with invalid references
+   -- ERROR 1452 (23000): Cannot add foreign key constraint
+
+SECTION 6: COMPLEX CONSTRAINTS
+------------------------------
+
+Q6.1 Prescriptions Table:
+CREATE TABLE Prescriptions (
+    appointment_id INT NOT NULL,
+    medicine_id INT NOT NULL,
+    dosage DECIMAL(8,2) CHECK (dosage > 0),
+    frequency VARCHAR(50),
+    duration_days INT DEFAULT 7,
+    refills INT CHECK (refills >= 0 AND refills <= 5),
+    
+    PRIMARY KEY (appointment_id, medicine_id),
+    FOREIGN KEY (appointment_id) REFERENCES Appointments(appointment_id),
+    FOREIGN KEY (medicine_id) REFERENCES Medicines(medicine_id)
+);
+
+Q6.2 MedicalRecords Table:
+CREATE TABLE MedicalRecords (
+    record_id INT PRIMARY KEY AUTO_INCREMENT,
+    patient_id INT NOT NULL,
+    visit_date DATE DEFAULT (CURRENT_DATE),
+    temperature DECIMAL(4,1) CHECK (temperature >= 34.0 AND temperature <= 42.0),
+    blood_pressure VARCHAR(10),
+    diagnosis TEXT,
+    
+    UNIQUE KEY unique_patient_visit (patient_id, visit_date),
+    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id),
+    CHECK (blood_pressure REGEXP '^[0-9]{2,3}/[0-9]{2,3}$')
+);
+
+SECTION 7: REAL-WORLD SCENARIOS
+--------------------------------
+
+Q7.1 Billing Table:
+CREATE TABLE Billing (
+    invoice_id INT PRIMARY KEY AUTO_INCREMENT,
+    invoice_number VARCHAR(50) UNIQUE NOT NULL,
+    patient_id INT NOT NULL,
+    appointment_id INT,
+    amount DECIMAL(12,2) CHECK (amount > 0),
+    discount DECIMAL(5,2) CHECK (discount >= 0 AND discount <= 50),
+    total_amount DECIMAL(12,2) CHECK (total_amount >= 0),
+    invoice_date DATE DEFAULT (CURRENT_DATE),
+    payment_date DATE,
+    payment_status ENUM('Pending', 'Paid', 'Partial', 'Cancelled') DEFAULT 'Pending',
+    
+    CHECK (payment_date IS NULL OR payment_date >= invoice_date),
+    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id),
+    FOREIGN KEY (appointment_id) REFERENCES Appointments(appointment_id)
+);
+
+Q7.2 WardManagement System:
+CREATE TABLE Wards (
+    ward_id INT PRIMARY KEY AUTO_INCREMENT,
+    ward_name VARCHAR(50) NOT NULL,
+    total_beds INT CHECK (total_beds > 0),
+    occupied_beds INT DEFAULT 0 CHECK (occupied_beds <= total_beds)
+);
+
+CREATE TABLE Beds (
+    bed_id INT PRIMARY KEY AUTO_INCREMENT,
+    ward_id INT NOT NULL,
+    bed_number VARCHAR(10) NOT NULL,
+    bed_type ENUM('General', 'ICU', 'Private', 'Semi-Private') DEFAULT 'General',
+    patient_id INT,
+    admission_date DATE,
+    discharge_date DATE,
+    
+    UNIQUE KEY unique_ward_bed (ward_id, bed_number),
+    FOREIGN KEY (ward_id) REFERENCES Wards(ward_id),
+    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id),
+    CHECK (discharge_date IS NULL OR discharge_date >= admission_date)
+);
+
+SECTION 8: CONSTRAINT CONFLICTS AND RESOLUTION
+----------------------------------------------
+
+Q8.1 What Happens:
+
+1. NOT NULL column with DEFAULT, insert NULL:
+   -- ERROR 1048: Column cannot be null (DEFAULT only works when value not provided)
+
+2. UNIQUE constraint conflicts with PRIMARY KEY:
+   -- Both can coexist on same column, PRIMARY KEY implies UNIQUE
+
+3. CHECK contradicts ENUM:
+   -- MySQL checks ENUM first, then CHECK constraint
+
+4. Foreign key references non-unique column:
+   -- ERROR 1215: Cannot add foreign key constraint (must reference UNIQUE/PK column)
+
+Q8.2 Handling:
+
+1. Temporarily disable constraints:
+   SET FOREIGN_KEY_CHECKS = 0;
+   -- Perform operations
+   SET FOREIGN_KEY_CHECKS = 1;
+
+2. Add constraint without checking existing data:
+   ALTER TABLE table_name 
+   ADD CONSTRAINT constraint_name CHECK (condition) NOT ENFORCED;
+
+3. Drop constraints:
+   ALTER TABLE table_name DROP CONSTRAINT constraint_name;
+   ALTER TABLE table_name DROP FOREIGN KEY fk_name;
+   ALTER TABLE table_name DROP INDEX index_name;
+
+SECTION 9: PERFORMANCE AND CONSTRAINTS
+---------------------------------------
+
+Q9.1 Constraints that create indexes:
+- PRIMARY KEY: Creates clustered index
+- UNIQUE constraint: Creates unique index
+- FOREIGN KEY: Creates index on referencing column (in InnoDB)
+
+Q9.2 Performance impact:
+- INSERT/UPDATE: Slower due to constraint checking
+- SELECT: Faster with indexes from constraints
+- DELETE: Slower with foreign key checks
+
+Q9.3 UNIQUE constraint vs UNIQUE index:
+- Functionally same in MySQL
+- UNIQUE constraint is logical concept
+- UNIQUE index is physical implementation
+
+SECTION 10: ADVANCED CONSTRAINT SCENARIOS
+------------------------------------------
+
+Q10.1 Complex Constraints:
+
+1. Doctor schedule constraint:
+   CHECK (end_time > start_time)
+
+2. Patient dates constraint:
+   CHECK (discharge_date IS NULL OR discharge_date > admission_date)
+
+3. Appointment duration:
+   CHECK (TIMESTAMPDIFF(MINUTE, start_time, end_time) >= 15)
+
+4. Medicine expiry:
+   CHECK (expiry_date > CURDATE())
+
+Q10.2 Using Triggers:
+-- Age calculation trigger
+CREATE TRIGGER calculate_age
+BEFORE INSERT ON Patients
+FOR EACH ROW
+SET NEW.age = TIMESTAMPDIFF(YEAR, NEW.birth_date, CURDATE());
+
+-- Auto status update trigger
+CREATE TRIGGER update_appointment_status
+BEFORE UPDATE ON Appointments
+FOR EACH ROW
+SET NEW.status = 
+    CASE 
+        WHEN NEW.return_date IS NOT NULL THEN 'Completed'
+        WHEN NEW.due_date < CURDATE() THEN 'Overdue'
+        ELSE NEW.status
+    END;
